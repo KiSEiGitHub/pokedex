@@ -10,13 +10,18 @@ function App() {
         skills : {},
         poids  : 0,
         type   : '',
-        taille : 0
+        taille : 0,
+        description : ''
     });
-    const [index, setIndex] = useState(1);
+    const [index, setIndex] = useState(240);
     
     const getPokemon = async () => {
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${index}`);
         const data = await res.json();
+        
+        const res2 = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${index}/`)
+        const data2 = await res2.json()
+        
         setPokemon({
             id      : data[ 'id' ],
             nom     : data[ 'name' ],
@@ -30,7 +35,8 @@ function App() {
             },
             poids   : data[ 'weight' ],
             type    : data[ 'types' ][ 0 ][ 'type' ][ 'name' ],
-            taille  : data[ 'height' ]
+            taille  : data[ 'height' ],
+            description : data2['flavor_text_entries'][0]['flavor_text']
         });
     };
     
@@ -38,7 +44,7 @@ function App() {
         getPokemon();
     }, [index]);
     
-    console.log(pokemon);
+    //console.log(pokemon);
     
     return (
         <>
@@ -88,8 +94,9 @@ function App() {
                             padding : '5px 25px'
                         }}
                     >
-                        <h2>{pokemon[ 'nom' ]}</h2>
-                        <h3>{pokemon[ 'type' ]}</h3>
+                        <h2 className='titre'>{pokemon[ 'nom' ]}</h2>
+                        <h3 className='titre'>{pokemon[ 'type' ]}</h3>
+                        <h4>{pokemon.description}</h4>
                     </div>
                 </div>
                 
@@ -107,7 +114,7 @@ function App() {
                         alignItems     : 'center'
                     }}
                 >
-                    <h2 style = {{ marginTop : '40px' }}>ID : #{pokemon[ 'id' ]}</h2>
+                    <h2 style = {{ marginTop : '40px' }} className='text-petit'>ID : #{pokemon[ 'id' ]}</h2>
                 </div>
                 
                 {/* Taille */}
@@ -121,8 +128,8 @@ function App() {
                         bottom   : 54,
                     }}
                 >
-                    <h4 style = {{ position : 'absolute', top : - 10 }}>
-                        Taille : {pokemon[ 'taille' ]}{' '}cm
+                    <h4 style = {{ position : 'absolute', top : - 10 }} className='text-tres-petit'>
+                        Taille : {pokemon[ 'taille' ]}{' '}ft
                     </h4>
                 </div>
                 
