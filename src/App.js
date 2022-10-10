@@ -4,39 +4,39 @@ import Pokedex from './img/pokedex.png';
 function App() {
     
     const [pokemon, setPokemon] = useState({
-        id     : 0,
-        nom    : '',
-        sprite : '',
-        skills : {},
-        poids  : 0,
-        type   : '',
-        taille : 0,
+        id          : 0,
+        nom         : '',
+        sprite      : '',
+        skills      : {},
+        poids       : 0,
+        type        : '',
+        taille      : 0,
         description : ''
     });
-    const [index, setIndex] = useState(240);
+    const [index, setIndex] = useState(392);
     
     const getPokemon = async () => {
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${index}`);
         const data = await res.json();
         
-        const res2 = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${index}/`)
-        const data2 = await res2.json()
+        const res2 = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${index}/`);
+        const data2 = await res2.json();
         
         setPokemon({
-            id      : data[ 'id' ],
-            nom     : data[ 'name' ],
-            sprite  : data[ 'sprites' ][ 'front_default' ],
-            sprite2 : data[ 'sprites' ][ 'back_default' ],
-            skills  : {
+            id          : data[ 'id' ],
+            nom         : data[ 'name' ],
+            sprite      : data[ 'sprites' ][ 'front_default' ],
+            sprite2     : data[ 'sprites' ][ 'back_default' ],
+            skills      : {
                 'skill1' : data[ 'abilities' ][ 0 ][ 'ability' ][ 'name' ],
                 'skill2' : data[ 'abilities' ][ 1 ][ 'ability' ][ 'name' ],
                 'skill3' : '',
                 'skill4' : '',
             },
-            poids   : data[ 'weight' ],
-            type    : data[ 'types' ][ 0 ][ 'type' ][ 'name' ],
-            taille  : data[ 'height' ],
-            description : data2['flavor_text_entries'][0]['flavor_text']
+            poids       : data[ 'weight' ],
+            type        : data[ 'types' ][ 0 ][ 'type' ][ 'name' ],
+            taille      : data[ 'height' ],
+            description : data2[ 'flavor_text_entries' ][ 0 ][ 'flavor_text' ]
         });
     };
     
@@ -48,11 +48,16 @@ function App() {
     
     return (
         <>
+            <h1>Pokédex</h1>
+            <h4>Cliquer sur les flèches</h4>
             <div
                 style = {{
-                    width    : '900px',
-                    margin   : '0 auto',
-                    position : 'relative'
+                    width     : '900px',
+                    margin    : '0 auto',
+                    position  : 'absolute',
+                    top       : '50%',
+                    left      : '50%',
+                    transform : 'translate(-50%, -50%)'
                 }}
             >
                 <img
@@ -94,8 +99,8 @@ function App() {
                             padding : '5px 25px'
                         }}
                     >
-                        <h2 className='titre'>{pokemon[ 'nom' ]}</h2>
-                        <h3 className='titre'>{pokemon[ 'type' ]}</h3>
+                        <h2 className = "titre">{pokemon[ 'nom' ]}</h2>
+                        <h3 className = "titre">{pokemon[ 'type' ]}</h3>
                         <h4>{pokemon.description}</h4>
                     </div>
                 </div>
@@ -114,7 +119,50 @@ function App() {
                         alignItems     : 'center'
                     }}
                 >
-                    <h2 style = {{ marginTop : '40px' }} className='text-petit'>ID : #{pokemon[ 'id' ]}</h2>
+                    <h2 style = {{ marginTop : '40px' }} className = "text-petit">ID : #{pokemon[ 'id' ]}</h2>
+                </div>
+                
+                <div style = {{
+                    position : 'absolute',
+                    top      : '450px',
+                    left     : '320px'
+                }}>
+                    <button
+                        onClick = {() => setIndex(index + 1)}
+                        style = {{
+                            backgroundColor : '#262626',
+                            width           : '30px',
+                            outline         : 'none',
+                            border          : 'none',
+                            color           : 'white',
+                            fontWeight      : 800,
+                            cursor          : 'pointer'
+                        }}
+                    >
+                        +
+                    </button>
+                
+                </div>
+                
+                <div style = {{
+                    position : 'absolute',
+                    top      : '450px',
+                    left     : '260px'
+                }}>
+                    <button
+                        onClick = {() => setIndex(index - 1)}
+                        style = {{
+                            backgroundColor : '#262626',
+                            width           : '30px',
+                            outline         : 'none',
+                            border          : 'none',
+                            color           : 'white',
+                            fontWeight      : 800,
+                            cursor          : 'pointer'
+                        }}
+                    >
+                        -
+                    </button>
                 </div>
                 
                 {/* Taille */}
@@ -128,7 +176,7 @@ function App() {
                         bottom   : 54,
                     }}
                 >
-                    <h4 style = {{ position : 'absolute', top : - 10 }} className='text-tres-petit'>
+                    <h4 style = {{ position : 'absolute', top : - 10 }} className = "text-tres-petit">
                         Taille : {pokemon[ 'taille' ]}{' '}ft
                     </h4>
                 </div>
@@ -149,8 +197,6 @@ function App() {
                     </h4>
                 </div>
             </div>
-            <button onClick={() => setIndex(index + 1)}>+</button>
-            <button onClick={() => setIndex(index - 1)}>-</button>
         </>
     );
 }
